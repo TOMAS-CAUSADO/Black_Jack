@@ -1,0 +1,28 @@
+
+
+
+html, body {
+    margin: 0px;
+    background-color: green;
+    color:  white;
+}
+
+.titulo{
+    text-align: center;
+    background-color: black;
+    color:  white;
+    padding: 20px;
+    font-size: 25px;
+}
+
+.carta{
+    position: relative;
+    width: 150px; /*determinamos el tamaño de la carta*/
+    left: 150px;    /*determinamos la posicion hacia la derecha de la carta*/
+    margin-left: -75px; /*posicionar las cartas encima de ellas*/
+}
+
+#computadora-cartas,#jugador-cartas{
+    height: 230px; /*Para el espacio de la cartas*/
+
+}
