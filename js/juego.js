@@ -6,12 +6,15 @@ let puntosComputadora = 0;
 
 //referencias del HTML
 const btnPedir = document.querySelector("#btnPedir");
-console.log(btnPedir);
+const btndetener = document.querySelector("#btnDetener") 
+const btnnuevo = document.querySelector("#btnNuevo")
 
 const divCartasJugador = document.querySelector("#jugador-cartas");
+const divCartasCompu = document.querySelector("#computadora-cartas");
 
 const puntosJug = document.querySelectorAll("small"); //esta constante dirige exactamente de donde se va mandat la informacion obtenida
 console.log(puntosJug)
+
 
 /**Con esta funcion se crea una nueva baraja */
 const crearDeck = () => {
@@ -33,6 +36,7 @@ const crearDeck = () => {
 
 crearDeck();
 
+
 const pedir_carta = () => {
   if (deck.length === 0) {
     throw "Se acabaron las Cartas de la Baraja";
@@ -51,17 +55,6 @@ const valor_carta = (cartas_pedida) => {
   return isNaN(valor) ? (valor === "A" ? 11 : 10) : valor * 1; // Condicion para sacar el valor numerico de cada carta
 };
 
-//********************Logica Computadora******************
-const turnoComputadora = (puntosMinimos) => {
-  const carta = pedir_carta();
-  puntosJugador = puntosJugador + valor_carta(carta);
-  puntosJug[0].innerText = puntosJugador; //puntosJug es una constante creada para asi saber donde mandar la informacion retenida
-
-  const imgCarta = document.createElement("img"); //creamos la constante donde se va almacenar la carta de tipo imagen
-  imgCarta.src = "cartas-220623-173702/cartas/" + carta + ".png"; // con esta funcion le damos la ruta de donde proviene la carta
-  imgCarta.classList.add("carta"); // le pasamos las configuraciones del Css aplicados en las cartas por medio de la clase
-  divCartasJugador.append(imgCarta);
-};
 
 //******************Eventos***********************
 
@@ -81,7 +74,50 @@ btnPedir.addEventListener("click", function () {
   if (puntosJugador > 21) {
     console.warn("lo siento, has perdidos ");
     btnPedir.disabled = true; //desactivo el boton para que no pueda hacer la accion de pedir de nuevo
+    btndetener.disabled = true;
+    turnoComputadora( puntosJugador );    //funcion para que despues que la persona supere el numero permitido automaicamente juege la maquina y le pasamos el valor de los puntos del jugador  
   } else if (puntosJugador === 21) {
     console.warn("21, Genial!");
+    btndetener.disabled = true;
+    btnPedir.disabled = true;
+    turnoComputadora( puntosJugador)
   }
 });
+
+//********************Logica Computadora******************
+const turnoComputadora = (puntosMinimos) => {
+ 
+    do{      
+      const carta = pedir_carta();
+        puntosComputadora = puntosComputadora + valor_carta(carta);
+        puntosJug[1].innerText = puntosComputadora; //puntosJ es una constante creada para asi saber donde mandar la informacion retenida
+
+        const imgCarta = document.createElement("img"); //creamos la constante donde se va almacenar la carta de tipo imagen
+        imgCarta.src = "cartas-220623-173702/cartas/" + carta + ".png"; // con esta funcion le damos la ruta de donde proviene la carta
+        imgCarta.classList.add("carta");    // le pasamos las configuraciones del Css aplicados en las cartas por medio de la clase
+        divCartasCompu.append(imgCarta);    //para que envie la carta seclecionada por la maquina al margen de espacio estipulado en el div
+
+          if (puntosMinimos> 21) {
+            break
+            
+          }
+      }while( (puntosComputadora< puntosMinimos) && (puntosMinimos <= 21)){}
+  
+};
+
+    //*******************Boton detener****************
+  btndetener.addEventListener("click", function (){
+
+    
+    btnPedir.disabled = true;
+    btndetener.disabled = true;
+    turnoComputadora( puntosJugador)
+
+    if ((puntosComputadora<=21) && (puntosComputadora>puntosJugador)) {
+      //<div class="alert alert-info" role="alert">El Ganador fue la Cumputadora NOOB!</div>
+
+    }
+
+  })
+
+
